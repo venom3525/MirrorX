@@ -1,4 +1,5 @@
 requests
+progress
 psutil
 python-telegram-bot==12.6.1 
 google-api-python-client>=1.7.11,<1.7.20
@@ -9,8 +10,12 @@ python-dotenv>=0.10
 tenacity>=6.0.0
 python-magic
 beautifulsoup4>=4.8.2,<4.8.10
-Pyrogram>=0.16.0,<0.16.10
+Pyrogram==0.18.0
 TgCrypto>=1.1.1,<1.1.10
-git+https://gitlab.com/magneto261290/youtube-dl
+psycopg2-binary
+git+https://github.com/yt-dlp/yt-dlp
 lxml
 telegraph
+appdirs
+speedtest-cli
+messages

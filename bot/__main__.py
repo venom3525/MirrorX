@@ -13,7 +13,7 @@ from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.message_utils import *
 from .helper.ext_utils.bot_utils import get_readable_file_size, get_readable_time
 from .helper.telegram_helper.filters import CustomFilters
-from .modules import authorize, list, cancel_mirror, mirror_status, mirror, clone, watch, delete
+from .modules import authorize, list, cancel_mirror, mirror_status, mirror, clone, watch, delete, speedtest
 
 
 @run_async
@@ -28,15 +28,15 @@ def stats(update, context):
     cpuUsage = psutil.cpu_percent(interval=0.5)
     memory = psutil.virtual_memory().percent
     disk = psutil.disk_usage('/').percent
-    stats = f'<b>Bot Uptime:</b> {currentTime}\n' \
-            f'<b>Total disk space:</b> {total}\n' \
-            f'<b>Used:</b> {used}  ' \
-            f'<b>Free:</b> {free}\n\n' \
-            f'📊Data Usage📊\n<b>Upload:</b> {sent}\n' \
-            f'<b>Down:</b> {recv}\n\n' \
-            f'<b>CPU:</b> {cpuUsage}% ' \
-            f'<b>RAM:</b> {memory}% ' \
-            f'<b>Disk:</b> {disk}%'
+    stats = f'<b>Bot Uptime ⌚:</b> {currentTime}\n' \
+            f'<b>Total disk space🗄️:</b> {total}\n' \
+            f'<b>Used 🗃️:</b> {used}  ' \
+            f'<b>Free 🗃️:</b> {free}\n\n' \
+            f'📇Data Usage📇\n<b>Uploaded :</b> {sent}\n' \
+            f'<b>Downloaded:</b> {recv}\n\n' \
+            f'<b>CPU 🖥️:</b> {cpuUsage}% ' \
+            f'<b>RAM ⛏️:</b> {memory}% ' \
+            f'<b>Disk 🗄️:</b> {disk}%'
     sendMessage(stats, context.bot, update)
 
 
@@ -83,7 +83,7 @@ def bot_help(update, context):
 
 /{BotCommands.TarMirrorCommand} [download_url][magnet_link]: start mirroring and upload the archived (.tar) version of the download
 
-/{BotCommands.WatchCommand} [youtube-dl supported link]: Mirror through youtube-dl 
+/{BotCommands.WatchCommand} [youtube-dl supported link]: Mirror through youtube-dl. Click /{BotCommands.WatchCommand} for more help.
 
 /{BotCommands.TarWatchCommand} [youtube-dl supported link]: Mirror through youtube-dl and tar before uploading
 
@@ -98,6 +98,8 @@ def bot_help(update, context):
 /{BotCommands.AuthorizeCommand}: Authorize a chat or a user to use the bot (Can only be invoked by owner of the bot)
 
 /{BotCommands.LogCommand}: Get a log file of the bot. Handy for getting crash reports
+
+/{BotCommands.SpeedCommand} : Check Internet Speed Of The Host
 
 '''
     sendMessage(help_string, context.bot, update)
@@ -117,7 +119,7 @@ def main():
     ping_handler = CommandHandler(BotCommands.PingCommand, ping,
                                   filters=CustomFilters.authorized_chat | CustomFilters.authorized_user)
     restart_handler = CommandHandler(BotCommands.RestartCommand, restart,
-                                     filters=CustomFilters.owner_filter)
+                                     filters=CustomFilters.owner_filter| CustomFilters.authorized_user)
     help_handler = CommandHandler(BotCommands.HelpCommand,
                                   bot_help, filters=CustomFilters.authorized_chat | CustomFilters.authorized_user)
     stats_handler = CommandHandler(BotCommands.StatsCommand,
